@@ -57,14 +57,14 @@ fun TicTacToeScreen(
             val turnMessage = "It is $turn"
             val winner = state.victor
             val winnerMessage = "$winner wins"
-            Text(
-                text = if (winner != null) winnerMessage else turnMessage,
-                textAlign = TextAlign.Center,
-                modifier = modifier.padding(top = 16.dp),
-                fontSize = 44.sp,
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                style = MaterialTheme.typography.bodySmall
-            )
+                Text(
+                    text = if (winner != null) winnerMessage else turnMessage,
+                    textAlign = TextAlign.Center,
+                    modifier = modifier.padding(top = 16.dp),
+                    fontSize = 44.sp,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    style = MaterialTheme.typography.bodySmall
+                )
             Spacer(modifier = Modifier.height(16.dp))
             Card (
                 shape = RoundedCornerShape(16.dp),
@@ -72,7 +72,7 @@ fun TicTacToeScreen(
                     containerColor = MaterialTheme.colorScheme.secondaryContainer
                 ),
                 elevation = CardDefaults.cardElevation(
-                    defaultElevation = 16.dp
+                    defaultElevation = 16.dp,
                 )
             ){
                 BuildRow(rowId = 1, viewModel = viewModel)
@@ -85,6 +85,10 @@ fun TicTacToeScreen(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondaryContainer,
                     contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                ),
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 16.dp,
+                    pressedElevation = 20.dp
                 )
             ) {
                 Text(text = "Reset Game", fontSize = 32.sp )
@@ -158,7 +162,10 @@ fun TicTacToeButton(
             contentColor = if(shouldChangeColor) MaterialTheme.colorScheme.onTertiary
             else MaterialTheme.colorScheme.onSecondaryContainer
         ),
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier.padding(16.dp),
+        elevation = ButtonDefaults.buttonElevation(
+           pressedElevation = 16.dp
+        )
     ){
         Text(text = button, fontSize = 50.sp)
     }
@@ -166,7 +173,7 @@ fun TicTacToeButton(
 @Preview(showBackground = true)
 @Composable
 fun SPreview(){
-    TicTacToeTheme(darkTheme = true) {
+    TicTacToeTheme(darkTheme = false) {
         TicTacToeScreen(viewModel = TicTacToeViewModel())
     }
 }
