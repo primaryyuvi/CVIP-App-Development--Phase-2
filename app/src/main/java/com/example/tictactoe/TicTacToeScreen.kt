@@ -1,6 +1,9 @@
 package com.example.tictactoe
 
+import TicTacToeTheme
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -26,13 +30,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.tictactoe.ui.theme.TicTacToeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,15 +67,15 @@ fun TicTacToeScreen(
                 text = if (winner != null) winnerMessage else turnMessage,
                 textAlign = TextAlign.Center,
                 modifier = modifier.padding(top = 16.dp),
-                fontSize = 38.sp,
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.headlineMedium
+                fontSize = 44.sp,
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                style = MaterialTheme.typography.bodySmall
             )
             Spacer(modifier = Modifier.height(16.dp))
             Card (
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer
                 ),
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 16.dp
@@ -83,11 +89,11 @@ fun TicTacToeScreen(
             Button(
                 onClick = { viewModel.resetBoard() },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             ) {
-                Text(text = "Reset Game", fontSize = 32.sp)
+                Text(text = "Reset Game", fontSize = 32.sp )
             }
 
         }
@@ -98,15 +104,24 @@ fun TicTacToeScreen(
 fun TicTacToeTopBar(){
     CenterAlignedTopAppBar(
         title = {
-            Text(
-                text = "Tic Tac Toe",
-                fontSize = 42.sp,
-                fontWeight = FontWeight.Bold
-            )
+            Row (horizontalArrangement = Arrangement.spacedBy(16.dp)){
+                Image(
+                    painter = painterResource(
+                        id = R.drawable.tic_tac_toe
+                    ),
+                    contentDescription = "Logo",
+                    modifier = Modifier.size(44.dp)
+                )
+                Text(
+                    text = "Tic Tac Toe",
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
         },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            titleContentColor = MaterialTheme.colorScheme.onSecondaryContainer
         )
     )
 }
@@ -141,12 +156,13 @@ fun TicTacToeButton(
     onClick: () -> Unit,
 ){
     val color = if(shouldChangeColor) MaterialTheme.colorScheme.tertiary
-                    else MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.secondaryContainer
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
             containerColor = color,
-            contentColor = Color.White
+            contentColor = if(shouldChangeColor) MaterialTheme.colorScheme.onTertiary
+            else MaterialTheme.colorScheme.onSecondaryContainer
         ),
         modifier = Modifier.padding(16.dp)
     ){
@@ -156,7 +172,7 @@ fun TicTacToeButton(
 @Preview(showBackground = true)
 @Composable
 fun SPreview(){
-    TicTacToeTheme(darkTheme = false) {
+    TicTacToeTheme(darkTheme = true) {
         TicTacToeScreen(viewModel = TicTacToeViewModel())
     }
 }
